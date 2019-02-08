@@ -3,14 +3,20 @@
 """
 Created on Thu Feb  7 16:33:24 2019
 
-@author: ubuntu
+@author: Gaurav Khandelwal
+
+@topic : Lexical Analyser
 
 """
-
-file_ptr=open("lab1.txt","r")
-
+# system function
 systemfunctions={'printf':0,'scanf':0}
 
+# all operator in c
+double_single_operators_in_c_in_c={'<<':0,'>>':0,'&&':0, '||':0,'++':0,'--':0,'==':0,'<=':0,'>=':0,'->':0}
+
+single_operators_in_c ={'+' : 0,'-' : 0,'*' : 0,'/' : 0,'%' :0,'<'  :0,'>':0,'&':0,'|':0,'!' :0,'^':0,'=':0}
+
+# declare keywords in c
 keywords_in_c = {'auto':0,  'const' :0,    'double' :0, 'float' :0, 'int' :0, 'short' :0,  'struct'  :0, 'unsigned':0,
     'break' :0, 'continue':0,  'else'   :0, 'for' :0,   'long' :0,     'signed'  :0,'switch' :0,  'void':0,
     'case':0,   'default':0,   'enum' :0,   'goto' :0,  'register':0,  'sizeof' :0, 'typedef' :0, 'volatile':0,
@@ -23,35 +29,40 @@ keywords_in_c = {'auto':0,  'const' :0,    'double' :0, 'float' :0, 'int' :0, 's
     'try':0,	'typeid':0,	'typename':0,	'using':0,
     'using'	:0,'virtual'	:0,'wchar_t':0,'include':0,'define':0}
 
-double_single_operators_in_c_in_c={'<<':0,'>>':0,'&&':0, '||':0,'++':0,'--':0,'==':0,'<=':0,'>=':0,'->':0}
-
-single_operators_in_c ={'+' : 0,'-' : 0,'*' : 0,'/' : 0,'%' :0,'<'  :0,'>':0,'&':0,'|':0,'!' :0,'^':0,'=':0}
-
+# declare punctuation in c				
 punctuation_in_c= {'"' : 0,'#' : 0,'$' : 0,'(' : 0,')' : 0,',' : 0,'.' : 0,':' : 0,';' : 0,'[' : 0,']' : 0,'`' : 0,'{' : 0,'}' : 0,'~' : 0 }
 
 leftover_tokens=[]
 flag=0
 
+# opening file
+file_ptr=open("lab1.txt","r")
+
+# to ceate unique list
 def unique_list(l):
     ulist = []
     [ulist.append(x) for x in l if x not in ulist]
     return ulist
 
+# reading file				
 for line in file_ptr:
     if line.find("//")!=-1:
         line=line.replace(line[line.find("//"):],"")
-        
+    """
+				1). /*       */
+				2). /*
+						*/
+				"""
+	# staring of comment							
     if line.find("/*")!=-1:
-        
         flag=1
-        
+        # if comment end found
         if line.find("*/")!=-1:
-            line=line.replace(line[line.find("/*"):line.find("*/")+2],"")
+            line=line.replace(line[line.find("/*"):line.find("*/")+2],"")  # for single line comment
             flag=0
-            
         else :
-            line=line.replace(line[line.find("/*"):],"")
-    
+            line=line.replace(line[line.find("/*"):],"")		# for multi line comment
+    # line contaning end of comment
     if line.find("*/")!=-1:
         line=line.replace(line[:line.find("*/")+2],"")
         flag=0
@@ -61,10 +72,10 @@ for line in file_ptr:
 
     for t in systemfunctions.keys():
         if line.find(t)!=-1:
-            systemfunctions[t]+=1
-            line=line.replace(line[line.find(t):line.find(t)+len(t)]," ")
-            leftover_tokens.append( line[ line.find('\"'):line.find('\"',line.find('\"')+1)+1 ] )
-            line=line.replace( line[ line.find('\"'):line.find('\"',line.find('\"')+1)+1 ] , " ")
+            systemfunctions[t]+=1    # increment the system function
+            line=line.replace(line[line.find(t):line.find(t)+len(t)]," ")   # replace that system function with ""
+            leftover_tokens.append( line[ line.find('\"'):line.find('\"',line.find('\"')+1)+1 ] ) # add token in list
+            line=line.replace( line[ line.find('\"'):line.find('\"',line.find('\"')+1)+1 ] , " ") # and replace that token also with "" 
 
     for t in double_single_operators_in_c_in_c.keys():
         pos=0
@@ -82,13 +93,7 @@ for line in file_ptr:
         if line.find(t)!=-1:
             line=line.replace(line[line.find(t):line.find(t)+len(t)]," ")
 
-    for t in punctuation_in_c.keys():
-        pos=0
-        while line.find(t,pos)!=-1:
-            punctuation_in_c[t]+=1
-            pos=line.find(t,pos)+len(t)
-        if line.find(t)!=-1:
-            line=line.replace(line[line.find(t):line.find(t)+len(t)]," ")
+    
 
     for t in keywords_in_c.keys():
         pos=0
@@ -100,6 +105,15 @@ for line in file_ptr:
         if line.find(" "+t+" ")!=-1:
             line=line.replace(line[line.find(" "+t+" "):line.find(" "+t+" ")+len(t)+1]," ")
     
+    for t in punctuation_in_c.keys():
+        pos=0
+        while line.find(t,pos)!=-1:
+            punctuation_in_c[t]+=1
+            pos=line.find(t,pos)+len(t)
+        if line.find(t)!=-1:
+            line=line.replace(line[line.find(t):line.find(t)+len(t)]," ")
+												
+						
     line1=line.split()
     for words in line1:
         if words.split()!="":
@@ -113,6 +127,7 @@ for line in keywords_in_c:
     if keywords_in_c[line]!=0:
          #print(line + "  "+str(keywords_in_c[line]))
          keywords_table.append("< keyword"+" , "+line+" , "+str(keywords_in_c[line])+" >") 
+									
 
 print("\n****************** TABLES **********************\n")									
 print("\n ______________	Keywords Table______________ \n")
