@@ -1,7 +1,0 @@
-A -> iEtS
-A -> iEtSeS
-A -> iES
-A -> abcd
-A -> abce
-A -> abf
-A -> b
