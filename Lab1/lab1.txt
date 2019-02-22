@@ -1,8 +1,11 @@
 #include <stdio.h>
+class def
+{
+}
 int main()
 {
     int n, reversedNumber = 0, remainder;
-
+	def();
     printf("Enter an integer: ");
     scanf("%d", &n);
 
@@ -14,6 +17,8 @@ int main()
     }
 
     printf("Reversed Number = %d", reversedNumber);
+   
+    
 
     return 0;
 }
