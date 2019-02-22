@@ -10,15 +10,13 @@
 
 using namespace std;
 
-
-
 map<string, set<string> > First, Follow;
 map<string, vector<string> >::iterator it;
 vector<string> v, visited;
-map<string, vector<string> > intialGrammar, resultGrammar;
-set<string> s, vis;
 set<string> T;
 set<string> NT; 
+map<string, vector<string> > intialGrammar, resultGrammar;
+set<string> s, vis;
 map< string ,map<string, vector<string> > > table;
 
 void openFile()
