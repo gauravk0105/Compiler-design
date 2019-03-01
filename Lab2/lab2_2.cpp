@@ -129,8 +129,16 @@ void leftFactoring()
                     size_t ind = v[j].find(pre[i]);
                     if(ind != string::npos)
                     {
-                        if(v[j] == pre[i]) v2.push_back("#");
+                        if(v[j] == pre[i]) v2.push_back("#");  // exact
                         else v2.push_back(v[j].substr(pre[i].length()));
+						/*
+							S -> a | ab| cd
+							S -> @ | @  | cd	
+
+							S -> aS' | cd
+							S' -> # | b 
+						
+						*/
                         v[j] = "@";
                     }
                 }
@@ -186,6 +194,7 @@ set<string> findFollow(string k)
                 if(v[i][ind] >= 65 && v[i][ind] <= 90){
                     Follow[k].insert(First[string(1, v[i][ind])].begin(), First[string(1, v[i][ind])].end());
                     Follow[k].erase(Follow[k].find("#"));
+					// if First of remaining not contain # then break
                     if(First[string(1, v[i][ind])].find("#") == First[string(1, v[i][ind])].end()) 
 						break;
                 }
@@ -194,6 +203,7 @@ set<string> findFollow(string k)
                     break;
                 }
             }
+			// if break happen at end of string then follow of left side will be added
             if(ind == v[i].length()){
                 s = findFollow(nt);
                 Follow[k].insert(s.begin(), s.end());
@@ -315,23 +325,23 @@ void buildRRGrammar()
 		}
 		cout<<endl;
 	}
-    cout<<"_____________________________________________________________________"<<endl<<endl;
-	cout<<"_____________________________________________________________________"<<endl<<endl;
+    cout<<"________________________________"<<endl<<endl;
+	cout<<"________________________________"<<endl<<endl;
     getLR();
 	ridOfLR();
     cout<<"Grammar After Removing Left Recursion :: "<<endl<<endl;
 	showCurrentGrammar(result);
-    cout<<"_____________________________________________________________________"<<endl<<endl;
-	cout<<"_____________________________________________________________________"<<endl<<endl;
+    cout<<"________________________________"<<endl<<endl;
+	cout<<"________________________________"<<endl<<endl;
 }
 
 void doDeterministicGrammar()
 {
-    leftFactoring();
+    leftFactoring();leftFactoring();leftFactoring();leftFactoring();leftFactoring();leftFactoring();leftFactoring();
     cout<<"Building the Deterministic Grammar :: "<<endl;
 	showCurrentGrammar(result);
-    cout<<"_____________________________________________________________________"<<endl<<endl;
-	cout<<"_____________________________________________________________________"<<endl<<endl;
+    cout<<"________________________________"<<endl<<endl;
+	cout<<"________________________________"<<endl<<endl;
 }
 
 void calculateFirst()
@@ -349,8 +359,8 @@ void calculateFirst()
 		}
 		cout<<" }"<<endl;
 	}
-    cout<<"_____________________________________________________________________"<<endl<<endl;
-	cout<<"_____________________________________________________________________"<<endl<<endl;
+    cout<<"________________________________"<<endl<<endl;
+	cout<<"________________________________"<<endl<<endl;	
 }
 
 void calculateFollow()
@@ -372,8 +382,8 @@ void calculateFollow()
 		}
 		cout<<" }"<<endl;
 	}
-    cout<<"_____________________________________________________________________"<<endl<<endl;
-	cout<<"_____________________________________________________________________"<<endl<<endl;
+    cout<<"________________________________"<<endl<<endl;
+	cout<<"________________________________"<<endl<<endl;
 }
 
 int main()
