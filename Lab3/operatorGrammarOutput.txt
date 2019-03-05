@@ -4,7 +4,6 @@ String to check : a*b+c*d$
 Productions :
 A -> a*b
 B -> c*d
-E -> A+B
+E -> AB
 
-Valid Grammar
-Input String Accepted
+Invalid Grammar

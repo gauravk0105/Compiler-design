@@ -11,6 +11,8 @@
         "string_view": "cpp",
         "valarray": "cpp",
         "*.tcc": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp"
     }
 }

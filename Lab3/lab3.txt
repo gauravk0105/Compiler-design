@@ -1,6 +1,6 @@
 E
 3
-E->A+B
+E->AB
 A->a*b
 B->c*d
 a*b+c*d$
