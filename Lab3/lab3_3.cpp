@@ -10,7 +10,7 @@ using namespace std;
 
 set<char> rt;
 map<char, vector<char> > lead,trail;
-map<char,map<char,char>> store;
+map<char,map<char,string>> store;
 char Start;
 
 bool checkTerminal(char c)
@@ -107,35 +107,34 @@ void parseTable(char** strings,int nproductions)
     for(int i=0;i<nproductions;i++)
     {
         char* string = strings[i];
-        for(int j=2;j<string[j]!='\0';j++)
+        cout << string << endl;
+        for(int j=2;string[j]!='\0';j++)
         {
-            if(string[j]=='|' || string[j+1]=='|') continue;
+            //cout << string[j] << endl;
+            if(string[j]=='|') continue;
             if( string[j+1]!='\0' && string[j+2]!='\0' && string[j+1]!='|' && string[j+2]!='|' && (checkTerminal(string[j]) && !checkTerminal(string[j+1]) && checkTerminal(string[j+2]))  )
-                store[string[j]][string[j+2]]='=';
-            else{
-                if( string[j+1]!='\0' && string[j+1]!='|' && ( checkTerminal(string[j]) && checkTerminal(string[j+1]))  )
-                    store[string[j]][string[j+2]]='=';
-                else{
-                    if( string[j+1]!='\0' && string[j+1]!='|' && ( checkTerminal(string[j]) && !checkTerminal(string[j+1]))  )
-                    {
-                       vector<char> var = lead[string[j+1]];
-                       for(int k=0;k<var.size();k++)
-                       {
-                           cout << string[j] << " " << var[k] << endl;
-                          store[string[j]][var[k]]='<';
-                       }     
-                    }
-                    else{
-                        if ( string[j+1]!='\0' && string[j+1]!='|' && ( !checkTerminal(string[j]) && checkTerminal(string[j+1])) )
-                        {
-                            vector<char> var = trail[string[j]];
-                            for(int k=0;k<var.size();k++)
-                            {
-                              
-                              store[var[k]][string[j+1]]='>';
-                            }
-                        }
-                    }                 
+                store[string[j]][string[j+2]]+='=';
+            
+            if( string[j+1]!='\0' && string[j+1]!='|' && ( checkTerminal(string[j]) && checkTerminal(string[j+1]))  )
+                store[string[j]][string[j+1]]+='=';
+            
+            if( string[j+1]!='\0' && string[j+1]!='|' && ( checkTerminal(string[j]) && !checkTerminal(string[j+1]))  )
+            {
+                       //cout << string[j+1] << endl;
+                vector<char> var = lead[string[j+1]];
+                for(int k=0;k<var.size();k++)
+                {
+                           //cout << string[j] << " " << var[k] << endl;
+                    store[string[j]][var[k]]+="<";
+                }     
+            }
+            
+            if ( string[j+1]!='\0' && string[j+1]!='|' && ( !checkTerminal(string[j]) && checkTerminal(string[j+1])) )
+            {
+                vector<char> var = trail[string[j]];
+                for(int k=0;k<var.size();k++)
+                {
+                    store[var[k]][string[j+1]]+=">";
                 }
             }
         }
@@ -155,7 +154,7 @@ void parseTable(char** strings,int nproductions)
         for(it2=rt.begin();it2!=rt.end();it2++)
         {
             char ch2 = *it2;
-            if( store[ch1][ch2]=='<' || store[ch1][ch2]=='>' || store[ch1][ch2]=='=' )
+            if( store[ch1][ch2]!="")
                 cout  << "[ " << ch2 << " , "<< store[ch1][ch2] << " ]" << " , ";
             else
                 {}
